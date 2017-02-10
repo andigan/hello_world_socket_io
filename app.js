@@ -18,45 +18,44 @@ var server = app.listen(port, function () {
 });
 // ################################################################## //
 
-
 // router
 app.get('/', function (req, res) {
   res.render('index.html');
 });
-
 
 // ##### SOCKET.IO ##### //
 
 // Initialize server-side socket.io
 var io = require('socket.io').listen(server);
 
-console.log('ok');
-
 // an instance of this function and its variables are created for each client connected
 io.on('connection', function (socket) {
   console.log('a client connected');
 
 
-// incoming remote control sockets
-  socket.on('hey_server_send_out_a_socket', function () {
+// incoming sockets
+  socket.on('Hey server, send out a socket.', function () {
     // outgoing socket
-    socket.emit('hey_clients_change_your_divs');
+    socket.emit('Hey client, set your background color to gray.');
   });
 
-
-
-  socket.on('seed_canvas', function (data) {
-    socket.broadcast.emit('seed_canvas', data);
+  socket.on('send message 1', function (data) {
+    console.log(data)
+    socket.emit('send message 1 back.', data + ' etc...');
+    //socket.broadcast.emit('send message 1 back.', data);
   });
 
-
+  socket.on('send message 2', function (data) {
+    console.log(data)
+    socket.broadcast.emit('send message 2 back.', data);
+//    io.emit('send message 2 back.', data);
+  });
 
   // this fires when the client disconnects
   socket.on('disconnect', function () {
-
+    socket.broadcast.emit('send message 1 back.', "Someone left.");
     console.log('a client disconnected');
 
-//    socket.broadcast.emit('client_disconnected', socketdata);
   });
 
 
