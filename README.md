@@ -1,1 +1,1 @@
-# hello_world_socket_io
+A minimal socket.io app.
